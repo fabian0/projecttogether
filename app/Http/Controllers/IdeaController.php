@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Idea;
 use App\Skill;
+use App\User;
+use DB;
 
 class IdeaController extends Controller
 {
@@ -15,18 +17,38 @@ class IdeaController extends Controller
         return response()->json($ideas);
     }
 
-    public function getLatest(){
-        $ideas = Idea::orderBy('id', 'desc')->take(20)->get();
+    public function getLatest($location){
+        $ideas = Idea::where('location', $location)->orderBy('id', 'desc')->take(20)->get();
         return response()->json($ideas);
     }
 
     public function getIdeaById($id){
-        $idea  = User::findOrFail($id);
+        $idea  = Idea::findOrFail($id);
         return response()->json($idea);
     }
 
-    public function getIdeaByCategory($id){
-        $ideas = Idea::where('category', $id)->orderBy('id', 'desc')->take(20)->get();
+    public function getIdeasByCategory($id, $location){
+        $ideas = Idea::where('location', $location)->where('category', $id)->orderBy('id', 'desc')->take(20)->get();
+        return response()->json($ideas);
+    }
+
+    public function getIdeasByUserSkills($id, $location){
+        $ideas = collect([]);
+        $user  = User::findOrFail($id);
+        $usrskills = $user->skills();
+
+        $ideas_all = Idea::where('location', $location);
+        foreach($ideas_all as $idea) {
+            $reqskills = $idea->requiredskills();
+            foreach($reqskills as $skill) {
+                foreach($usrskills as $usrskill){
+                    if($usrskill == $skill){
+                        $ideas->push($idea);
+                    }
+                }
+            }
+        }
+
         return response()->json($ideas);
     }
 

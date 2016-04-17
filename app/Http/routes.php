@@ -22,9 +22,11 @@ Route::get('users/{id}','UserController@getUserById');
 Route::post('/users', 'UserController@createUser');
 Route::post('/users/{id}/skills', 'UserController@addSkillToUser');
 
-Route::get('/ideas/latest', 'IdeaController@getLatest');
-Route::get('/ideas/category/{id}', 'IdeaController@getIdeaByCategory');
+Route::get('/ideas/latest/{location}', 'IdeaController@getLatest');
+Route::get('/ideas/category/{id}/{location}', 'IdeaController@getIdeasByCategory');
+Route::get('/ideas/user/{id}/{location}', 'IdeaController@getIdeasByUserSkills');
 Route::post('/ideas', 'IdeaController@createIdea');
 Route::post('/ideas/{id}/skills', 'IdeaController@addSkillToIdea');
+
 
 

@@ -17,6 +17,7 @@ class CreateIdeasTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->string('text');
             $table->integer('category');
+            $table->string('location');
             $table->timestamps();
 
             $table->foreign('user_id')

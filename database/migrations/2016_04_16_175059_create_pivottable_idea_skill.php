@@ -27,6 +27,6 @@ class CreatePivottableIdeaSkill extends Migration
      */
     public function down()
     {
-        Schema::drop('idea_skills');
+        Schema::drop('idea_skill');
     }
 }
